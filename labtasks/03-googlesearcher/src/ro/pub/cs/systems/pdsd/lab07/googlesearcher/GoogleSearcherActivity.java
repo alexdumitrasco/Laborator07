@@ -1,5 +1,6 @@
 package ro.pub.cs.systems.pdsd.lab07.googlesearcher;
 
+import ro.pub.cs.systems.pdsd.lab07.googlesearcher.general.Constants;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class GoogleSearcherActivity extends Activity {
 	
@@ -36,6 +38,9 @@ public class GoogleSearcherActivity extends Activity {
 			// - mimetype is text/html
 			// - encoding is UTF-8
 			// - history is null
+			
+			
+			
 
 		}
 	}
@@ -52,7 +57,21 @@ public class GoogleSearcherActivity extends Activity {
 			// split a multiple word (separated by space) keyword and link them through +
 			// prepend the keyword with "search?q=" string
 			// start the GoogleSearcherThread passing the keyword
+			keywordEditText = (EditText) findViewById(R.id.keyword_edit_text);
+			String keyword = keywordEditText.getText().toString();
 
+			if (keyword == null) {
+				Toast.makeText(getApplicationContext() , "No keyword introduced!!!)",
+				Toast.LENGTH_LONG).show();
+			}
+			else {
+				String[] keywords = keyword.split(" ");
+				keyword = Constants.SEARCH_PREFIX + keywords[0];
+				for (int k = 1; k < keywords.length; k++) {
+					keyword += "+" + keywords[k];
+				}
+				new GoogleSearcherThread(keyword).start();
+			}
 		}
 	}
 
